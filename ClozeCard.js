@@ -10,40 +10,43 @@ var ClozeCard = function(statement, cloze, partStatement) {
 
     this.partStatement = function() {
         var cloze = this.statement.replace(this.cloze, "..........");
-        
+
         return cloze;
-     }
+    }
 
-     this.printCardInfo = function () {
-        var printCard = "Front: " + this.statement + "\nBack: " + this.cloze + "\r\n";  
+    this.printCardInfo = function() {
+        var printCard = "Front: " + this.statement + "\nBack: " + this.partStatement + "\nCloze: " + this.cloze + "\r\n";
 
-        fs.appendFileSync("clozeLog.txt", printCard)
-     }
- };
+        fs.appendFile('clozeCardLog.json', JSON.stringify(this), (err) => {
+            if (err) {
+
+                console.log(err);
+            }
+        });
+    }
+}
 
 function createClozeCard() {
-    inquirer.prompt([
-    {
-        name: "statement", 
+    inquirer.prompt([{
+        name: "statement",
         message: "Enter the the statement for the Cloze Card:"
     }, {
-        name: "cloze", 
+        name: "cloze",
         message: "Enter the CLOZE portion of the statement: "
     }, {
-        type: "confirm", 
-        message: "Do you want to create another Cloze Card?", 
-        name: "continue", 
+        type: "confirm",
+        message: "Do you want to create another Cloze Card?",
+        name: "continue",
         default: true
-    }]).then(function(answers){
+    }]).then(function(answers) {
         var newCard = new ClozeCard(answers.statement, answers.cloze);
         newCard.printCardInfo();
         if (answers.continue === true) {
             createClozeCard()
+        } else {
+            console.log("see clozeCardLog.json for new flashcards!");
         }
-        else{
-            console.log("see clozeLog.txt for new flashcards!");
-        }
-    });    // body...
+    }); // body...
 };
 createClozeCard();
 

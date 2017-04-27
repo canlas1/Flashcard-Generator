@@ -8,17 +8,25 @@ function BasicCard(question, answer) {
     this.question = question;
     this.answer = answer;
 
+
     this.displaycardContent = function() {
         console.log("Front: " + this.question + " " + "Back: " + this.answer);
     }
 
     this.printCardInfo = function() {
-        var printCard = "Front: " + this.question + "\nBack: " + this.answer + "\r\n";
-
-
-        fs.appendFileSync("basicLog.txt", printCard);
+        var printCard = "Front: " + this.question + ", Back: " + this.answer + "\n";
     }
-};
+
+
+        fs.appendFile('basicCardLog.json', JSON.stringify(this), (err) =>{
+        if(err) {
+     
+            console.log(err);
+    };
+});
+}
+
+
 
 function createBasicCard() {
     inquirer.prompt([
@@ -46,12 +54,46 @@ function createBasicCard() {
             createBasicCard()
         }
         else{
-            console.log("see basicLog.txt for new flashcards!")
+            console.log("see basicCardLog.json for new flashcards!")
+         
         }
 
 
     });
 }
+// function readText() {
+//     // body...
+
+// fs.readFile("basicLog.txt", "utf8", function(err, data) {
+//   // If there was an error reading the file, we log it and return immediately
+//   if (err) {
+//     return console.log(err);
+//   }
+//   console.log(data);
+//   data = data.split("\n");
+//   console.log(data);
+//   splitBasicCardUp(data);
+
+
+// });
+// }
+// function splitBasicCardUp(arrayOfQuestions) {
+//     console.log(arrayOfQuestions);
+//     for (var i = 0; i < arrayOfQuestions.length; i++) {
+//         var currentQuestion = arrayOfQuestions[i];
+//         currentQuestion = currentQuestion.split(",");
+//         inquirer.prompt([{
+//             type: "input",
+//             name: "fuckoff",
+//             message: currentQuestion[0]
+//         }]).then(function(answer){
+//             if(answer.fuckoff == currentQuestion[1]) {
+//                 console.log("Woohooo")
+//             }
+//         })
+
+//     }
+// }
 
    createBasicCard();
 

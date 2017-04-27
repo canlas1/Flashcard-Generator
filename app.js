@@ -1,32 +1,58 @@
-// console.log("this is loaded!");
+console.log("this is loaded!");
 //##########################################################
 var fs = require('fs');
-var inquirer = require('inquirer');
-
-var textFile = process.argv[2];
+// var inquirer = require('inquirer');
+// var request = require('request');
+var BasicCard = require("./BasicCard");
+var ClozeCard = require("./ClozeCard");
+//##########################################################
+//GLOBAL VARIABLES
+var nodeArg= process.argv;
+var userInput = process.argv[2];
 var number = 0;
 
-fs.readFile(textFile, "utf8", function(err, data) {
-  // If there was an error reading the file, we log it and return immediately
-  if (err) {
-    return console.log(err);
-  }
-  // number should still be 0 here
-  console.log(number);
-  var secondNumber = 0;
-  // Inside of the readFile callback, we use the appendFileSync function. This version of appendFile is synchronous
-  // The first parameter is the name of the text file to save to
-  // The second parameter is the data we want to write as a string
-  // The third parameter is the callback function to be called when appendFile is finished
-  // For more info, see the docs: https://nodejs.org/api/fs.html#fs_fs_appendfile_file_data_options_callback
-  number = 5;
-  secondNumber = 2;
-  fs.appendFileSync("basicLog.txt", "Hello Kitty");
-  // log that we saved the info successfully. we know this
-  // because no error was encountered, or we would have returned above
-  console.log("SAVED");
-  // secondNumber should be 2 here
-  console.log(secondNumber);
-});
-// number is still 0 here
-console.log("number", number);
+function BasicCard(question, answer) {
+    if (!(this instanceof BasicCard)) {
+        return new BasicCard(front, back);
+    }
+    this.front = front;
+    this.back = back;
+   
+
+    fs.appendFile('basicLog.txt', JSON.stringify(this), (err) =>{
+        if(err) {
+            console.log(err);
+        }
+    })
+}
+
+function playGame() {
+	inquirer.prompt([{
+		type: "confirm",
+        message: "Do you want to play Basic Flash Cards?",
+        name: "continue",
+        default: true
+       
+
+	}])then(function(answer) {
+        var newCard = new BasicCard(answer.question, answer.answer);
+        newCard.printCardInfo();
+        if (answer.continue === true){
+            createBasicCard()
+	// body...
+}
+ 
+ // var playCards = new BasicCard("Who was the first president of the United States?", "George Washington");
+
+
+ // function playCards(front, back) {
+ // 	var seeFrontOfCard = function(){this.front = front;}
+ // 	var seeBackOfCard = function(){this.back = back;}
+ // }
+ // playCards();
+
+ 
+ // if (userInput == "yes") {
+ // 	playCards.seeFrontOfCard();
+ // 	playCards.seeBackOfCard();
+ // }
